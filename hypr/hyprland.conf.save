@@ -1,0 +1,89 @@
+# --- MONITEUR (Adapté à ton 34") ---
+monitor=,3440x1440@144,0x0,1
+
+# --- VARIABLES ---
+$mainMod = SUPER
+$terminal = kitty
+$fileManager = thunar
+$menu = rofi -show drun
+
+# --- LOOK & FEEL ---
+general {
+    gaps_in = 5
+    gaps_out = 15
+    border_size = 2
+    col.active_border = rgba(33ccffee) rgba(00ff99ee) 45deg
+    col.inactive_border = rgba(595959aa)
+
+    layout = master # On utilise master pour le centrage
+}
+
+# Force la fenêtre à ne pas prendre tout l'écran si elle est seule
+master {
+    # On définit le ratio (70%)
+    mfact = 0.70
+    # On empêche l'étirement automatique
+    no_gaps_when_only = 0 
+}
+
+# La règle magique pour ton 34" (ajuste le 500 selon tes goûts)
+# Syntaxe : gapsout: HAUT DROITE BAS GAUCHE
+workspace = f[1], gapsout:60 500 60 500
+}
+
+decoration {
+    rounding = 12
+    blur {
+        enabled = true
+        size = 5
+        passes = 2
+        special = true # Floute le fond quand on ouvre un tiroir
+    }
+}
+
+# --- RACCOURCIS DE BASE ---
+bind = $mainMod, Q, exec, $terminal
+bind = $mainMod, C, killactive,
+bind = $mainMod, E, exec, $fileManager
+bind = $mainMod, V, togglefloating,
+bind = $mainMod, Space, exec, $menu
+bind = $mainMod, P, pseudo, # dwindle
+bind = $mainMod, J, togglesplit, # dwindle
+
+# --- LES TIROIRS DÉDIÉS ---
+
+# 1. Raccourcis pour basculer l'affichage
+bind = $mainMod, D, togglespecialworkspace, chat
+bind = $mainMod, M, togglespecialworkspace, music
+bind = $mainMod, F, togglespecialworkspace, files
+
+# 2. Règles pour envoyer les applis dedans automatiquement
+windowrulev2 = workspace special:chat, class:(discord)
+windowrulev2 = workspace special:music, class:(Cider)
+windowrulev2 = workspace special:files, class:(thunar)
+
+# 3. On force les fenêtres des tiroirs à être centrées et flottantes
+windowrulev2 = float, workspace:special:*
+windowrulev2 = size 80% 80%, workspace:special:*
+windowrulev2 = center, workspace:special:*
+
+# --- AUTOSTART ---
+exec-once = waybar
+exec-once = swaync
+exec-once = [workspace special:chat silent] discord
+exec-once = [workspace special:music silent] cider
+# Fond d'écran (installe 'swww' ou 'hyprpaper')
+exec-once = swww init
+
+
+# --- NVIDIA FIXES ---
+env = LIBVA_DRIVER_NAME,nvidia
+env = XDG_SESSION_TYPE,wayland
+env = GBM_BACKEND,nvidia-drm
+env = __GLX_VENDOR_LIBRARY_NAME,nvidia
+env = WLR_NO_HARDWARE_CURSORS,1  # Indispensable pour voir ta souris !
+
+cursor {
+    no_hardware_cursors = true
+}
+

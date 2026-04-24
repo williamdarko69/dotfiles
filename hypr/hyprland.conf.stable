@@ -1,0 +1,41 @@
+# --- INPUT & MONITOR ---
+monitor=,3440x1440@144,0x0,1
+
+input {
+    kb_layout = fr
+    follow_mouse = 1
+}
+
+# --- LOOK & LAYOUT ---
+general {
+    gaps_in = 5
+    gaps_out = 60 500 60 500
+    border_size = 2
+    col.active_border = rgba(33ccffee)
+    layout = master
+}
+
+decoration {
+    rounding = 10
+}
+
+master {
+    mfact = 0.70
+}
+
+workspace = 1, gapsout:60 500 60 500
+
+# --- RÈGLES DISCORD ---
+windowrule = match:class discord, float on, size 80% 80%, center on, workspace special:chat
+
+$mainMod = SUPER
+
+bind = $mainMod, C, killactive
+bind = $mainMod, Q, exec, kitty
+bind = $mainMod, R, exec, rofi -show drun
+bind = $mainMod, M, exit
+
+exec-once = waybar
+exec-once = discord
+
+bind = SUPER, F, fullscreen, 1

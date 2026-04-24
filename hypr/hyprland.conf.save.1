@@ -1,0 +1,62 @@
+# --- INPUT & MONITOR ---
+monitor=,3440x1440@144,0x0,1
+input {
+    kb_layout = fr
+    follow_mouse = 1
+}
+# --- LOOK & LAYOUT ---
+general {
+    gaps_in = 5
+    gaps_out = 60 500 60 500
+    border_size = 2
+    col.active_border = rgba(33ccffee)
+    layout = master
+}
+decoration {
+    rounding = 10
+}
+master {
+    mfact = 0.70
+}
+workspace = 1, gapsout:60 500 60 500
+
+# --- RÈGLES DISCORD ---
+windowrule = match:class discord, workspace special:chat, float on, size 2000 1200, center on
+bind = SUPER, D, togglespecialworkspace, chat
+
+# --- RÈGLES CIDER ---
+windowrule = match:class Cider, workspace special:cider, float on, size 1500 1000, center on
+bind = SUPER, M, togglespecialworkspace, cider
+
+$mainMod = SUPER
+bind = $mainMod, C, killactive
+bind = $mainMod, Q, exec, kitty
+bind = $mainMod, R, exec, rofi -show drun
+bind = $mainMod SHIFT, M, exit
+bind = SUPER, F, fullscreen, 0
+
+# --- ENVIRONNEMENT ---
+env = QT_QPA_PLATFORMTHEME,qt5ct
+
+# --- LANCEMENT ---
+exec-once = while true; do waybar; sleep 1; done
+exec-once = discord --minimized
+exec-once = Cider --minimized
+exec-once = while true; do dunst; sleep 1; done
+exec-once = ddcutil getvcp 10 --brief 2>/dev/null | awk '/^VCP/{print $4}' > /tmp/brightness_cache
+exec-once = hyprpaper
+
+# --- ANIMATIONS ---
+animations {
+    enabled = true
+    bezier = myBezier, 0.25, 0.9, 0.25, 1.0
+    animation = windows, 1, 7, myBezier
+    animation = windowsOut, 1, 7, default, popin 80%
+    animation = border, 1, 10, default
+    animation = fade, 1, 7, default
+    animation = workspaces, 1, 6, default
+}
+
+
+# --- WALLPAPER ---
+exec-once = hyprpaper
